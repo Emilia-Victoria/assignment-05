@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace GildedRose
 {
-    class Program
+    public class Program
     {
         IList<Item> Items;
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             System.Console.WriteLine("OMGHAI!");
 
@@ -52,12 +52,12 @@ namespace GildedRose
                     Console.WriteLine(app.Items[j].Name + ", " + app.Items[j].SellIn + ", " + app.Items[j].Quality);
                 }
                 Console.WriteLine("");
-                app.UpdateQuality();
+                UpdateQuality(app.Items);
             }
 
         }
 
-        public void UpdateQuality()
+        public static void UpdateQuality(IList<Item> Items)
         {
             for (var i = 0; i < Items.Count; i++)
             {
