@@ -144,6 +144,21 @@ public class ProgramTests
     }
 
     [Fact]
+    public void UpdateQualityQualityDropsBy2ForGenericItemsWithSellInLessThan0()
+    {
+        // Arrange
+        var item = new Item{Name = "+5 Dexterity Vest", SellIn = -1, Quality = 10};
+        var items2 = new List<Item>{item};
+        var qualityBefore = item.Quality;
+
+        // Act
+        Program.UpdateQuality(items2);
+
+        // Assert
+        item.Quality.Should().Be(qualityBefore-2);
+    }
+
+    [Fact]
     public void runProgram () {
         // Arrange
         using var writer = new StringWriter();

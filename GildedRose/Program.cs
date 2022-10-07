@@ -142,6 +142,42 @@ namespace GildedRose
         public int SellIn { get; set; }
 
         public int Quality { get; set; }
+
+        public virtual void UpdateQuality()
+        {
+            SellIn--;
+            if (Quality > 0)
+            {
+                Quality--;
+
+                if (SellIn < 0 && Quality > 0) Quality--;
+            }
+        }
+    }
+
+    public class AgedBrieItem : Item {
+        public override void UpdateQuality() {
+            SellIn--;
+            if (Quality < 50)
+            {
+                Quality++;
+                if (SellIn < 0 && Quality < 50){
+                    Quality++;
+                }
+            }
+        }
+    }
+
+    public class BackstageItem : Item {
+        public override void UpdateQuality(){}
+    }
+
+    public class LegendaryItem : Item {
+        public override void UpdateQuality(){}
+    }
+
+    public class ConjuredItem : Item {
+        public override void UpdateQuality(){}
     }
 
 }
