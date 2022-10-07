@@ -108,13 +108,31 @@ public class ProgramTests
     }
 
     [Fact]
-    public void UpdateQualitySulfuras()
+    public void UpdateQualitySulfurasQualityIs80()
     {
+        // Arrange
+        var entity = Items.Where(i => i.Name.StartsWith("Sulfuras")).FirstOrDefault();
+        entity!.Quality.Should().Be(80);
+
         // Act
         Program.UpdateQuality(Items);
 
         // Assert
-        Items.Where(i => i.Name.StartsWith("Sulfuras")).FirstOrDefault()!.Quality.Should().Be(80);
+        entity!.Quality.Should().Be(80);
+    }
+
+    [Fact]
+    public void UpdateQualitySulfurasSellInDoesntChange()
+    {
+        // Arrange
+        var entity = Items.Where(i => i.Name.StartsWith("Sulfuras")).FirstOrDefault();
+        var SellInBefore = entity!.SellIn;
+
+        // Act
+        Program.UpdateQuality(Items);
+
+        // Assert
+        entity!.SellIn.Should().Be(SellInBefore);
     }
 
     [Fact]
@@ -156,19 +174,5 @@ public class ProgramTests
 
         // Assert
         item.Quality.Should().Be(qualityBefore-2);
-    }
-
-    [Fact]
-    public void runProgram () {
-        // Arrange
-        using var writer = new StringWriter();
-        Console.SetOut(writer);
-        var expected = System.IO.File.ReadAllText("../../../gildenRose.txt");
-
-        // Act
-        Program.Main(Array.Empty<string>());
-
-        // Assert
-        writer.ToString().Should().Be(expected);
     }
 }
