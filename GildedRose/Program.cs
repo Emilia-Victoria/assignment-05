@@ -136,9 +136,11 @@ namespace GildedRose
                     Quality--;
                 }
             }
-            if (SellIn < 0) {
+            if (SellIn < 0 && Quality > 0) {
                 Quality--;
-                Quality--;
+                if(Quality > 0){
+                    Quality--;
+                }
             }
         }
     }

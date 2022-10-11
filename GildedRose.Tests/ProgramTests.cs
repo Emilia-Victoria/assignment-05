@@ -171,4 +171,33 @@ public class ProgramTests
         // Assert
         writer.ToString().Should().Be(expected);
     }
+
+    [Fact]
+    public void UpdateQualityConjuredItemDecreases2SellInOver0()
+    {
+        // Arrange
+        var entity = Items.Where(i => i.Name == "Conjured Mana Cake").FirstOrDefault();
+        var qualityBefore = entity!.Quality;
+
+        // Act
+        Program.UpdateQuality(Items);
+
+        // Assert
+        entity.Quality.Should().Be(qualityBefore-2);
+    }
+
+    [Fact]
+    public void UpdateQualityConjuredItemDecreases4SellInLessThan0()
+    {
+        // Arrange
+        var entity = new ConjuredItem{Name = "Conjured Mana Cake", SellIn = 0, Quality = 10};
+        var Items2 = new List<Item>{entity};
+        var qualityBefore = entity.Quality;
+
+        // Act
+        Program.UpdateQuality(Items2);
+
+        // Assert
+        entity.Quality.Should().Be(qualityBefore-4);
+    }
 }
