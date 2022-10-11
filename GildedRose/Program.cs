@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace GildedRose
@@ -15,30 +15,29 @@ namespace GildedRose
                               Items = new List<Item>
                                           {
                 new Item { Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20 },
-                new Item { Name = "Aged Brie", SellIn = 2, Quality = 0 },
+                new AgedBrieItem { Name = "Aged Brie", SellIn = 2, Quality = 0 },
                 new Item { Name = "Elixir of the Mongoose", SellIn = 5, Quality = 7 },
-                new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 },
-                new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = -1, Quality = 80 },
-                new Item
+                new LegendaryItem { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 },
+                new LegendaryItem { Name = "Sulfuras, Hand of Ragnaros", SellIn = -1, Quality = 80 },
+                new BackstageItem
                 {
                     Name = "Backstage passes to a TAFKAL80ETC concert",
                     SellIn = 15,
                     Quality = 20
                 },
-                new Item
+                new BackstageItem
                 {
                     Name = "Backstage passes to a TAFKAL80ETC concert",
                     SellIn = 10,
                     Quality = 49
                 },
-                new Item
+                new BackstageItem
                 {
                     Name = "Backstage passes to a TAFKAL80ETC concert",
                     SellIn = 5,
                     Quality = 49
                 },
-				// this conjured item does not work properly yet
-				new Item { Name = "Conjured Mana Cake", SellIn = 3, Quality = 6 }
+				new ConjuredItem { Name = "Conjured Mana Cake", SellIn = 3, Quality = 6 }
                                           }
 
                           };
@@ -59,77 +58,9 @@ namespace GildedRose
 
         public static void UpdateQuality(IList<Item> Items)
         {
-            for (var i = 0; i < Items.Count; i++)
+            foreach (Item item in Items)
             {
-                if (Items[i].Name != "Aged Brie" && Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                {
-                    if (Items[i].Quality > 0)
-                    {
-                        if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                        {
-                            Items[i].Quality = Items[i].Quality - 1;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Items[i].Quality < 50)
-                    {
-                        Items[i].Quality = Items[i].Quality + 1;
-
-                        if (Items[i].Name == "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (Items[i].SellIn < 11)
-                            {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
-                            }
-
-                            if (Items[i].SellIn < 6)
-                            {
-                                if (Items[i].Quality < 50)
-                                {
-                                    Items[i].Quality = Items[i].Quality + 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                {
-                    Items[i].SellIn = Items[i].SellIn - 1;
-                }
-
-                if (Items[i].SellIn < 0)
-                {
-                    if (Items[i].Name != "Aged Brie")
-                    {
-                        if (Items[i].Name != "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (Items[i].Quality > 0)
-                            {
-                                if (Items[i].Name != "Sulfuras, Hand of Ragnaros")
-                                {
-                                    Items[i].Quality = Items[i].Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Items[i].Quality = Items[i].Quality - Items[i].Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (Items[i].Quality < 50)
-                        {
-                            Items[i].Quality = Items[i].Quality + 1;
-                        }
-                    }
-                }
+                item.UpdateQuality();
             }
         }
 
@@ -169,7 +100,27 @@ namespace GildedRose
     }
 
     public class BackstageItem : Item {
-        public override void UpdateQuality(){}
+        public override void UpdateQuality()
+        {
+            SellIn--;
+            switch (SellIn)
+            {
+                case < 0:
+                    Quality = 0;
+                break;
+                case <= 5:
+                    Quality += 3;
+                break;
+                case <= 10:
+                    Quality += 2;
+                break;
+                case > 10:
+                    Quality += 1;
+                break;
+            }
+
+            if (Quality > 50) Quality = 50;
+        }
     }
 
     public class LegendaryItem : Item {
@@ -177,7 +128,18 @@ namespace GildedRose
     }
 
     public class ConjuredItem : Item {
-        public override void UpdateQuality(){}
+        public override void UpdateQuality(){
+            SellIn--;
+            if (Quality > 0){
+                Quality--;
+                if(Quality > 0){
+                    Quality--;
+                }
+            }
+            if (SellIn < 0) {
+                Quality--;
+                Quality--;
+            }
+        }
     }
-
 }

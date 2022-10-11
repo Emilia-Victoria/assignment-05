@@ -9,30 +9,30 @@ public class ProgramTests
         Items = new List<Item>
                                           {
                 new Item { Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20 },
-                new Item { Name = "Aged Brie", SellIn = 2, Quality = 0 },
+                new AgedBrieItem { Name = "Aged Brie", SellIn = 2, Quality = 0 },
                 new Item { Name = "Elixir of the Mongoose", SellIn = 5, Quality = 7 },
-                new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 },
-                new Item { Name = "Sulfuras, Hand of Ragnaros", SellIn = -1, Quality = 80 },
-                new Item
+                new LegendaryItem { Name = "Sulfuras, Hand of Ragnaros", SellIn = 0, Quality = 80 },
+                new LegendaryItem { Name = "Sulfuras, Hand of Ragnaros", SellIn = -1, Quality = 80 },
+                new BackstageItem
                 {
                     Name = "Backstage passes to a TAFKAL80ETC concert",
                     SellIn = 15,
                     Quality = 20
                 },
-                new Item
+                new BackstageItem
                 {
                     Name = "Backstage passes to a TAFKAL80ETC concert",
                     SellIn = 10,
                     Quality = 40
                 },
-                new Item
+                new BackstageItem
                 {
                     Name = "Backstage passes to a TAFKAL80ETC concert",
                     SellIn = 5,
                     Quality = 40
                 },
-				// this conjured item does not work properly yet
-				new Item { Name = "Conjured Mana Cake", SellIn = 3, Quality = 6 }
+				
+				new ConjuredItem { Name = "Conjured Mana Cake", SellIn = 3, Quality = 6 }
                                           };
     }
 
@@ -134,7 +134,7 @@ public class ProgramTests
     public void UpdateQualityNeverOver50()
     {
         //Arrange
-        var Items2 = new List<Item> {new Item { Name = "Aged Brie", SellIn = 2, Quality = 50 }};
+        var Items2 = new List<Item> {new AgedBrieItem { Name = "Aged Brie", SellIn = 2, Quality = 50 }};
         
         // Act
         Program.UpdateQuality(Items2);
@@ -163,7 +163,7 @@ public class ProgramTests
         // Arrange
         using var writer = new StringWriter();
         Console.SetOut(writer);
-        var expected = System.IO.File.ReadAllText("../../../gildenRose.txt");
+        var expected = System.IO.File.ReadAllText("../../../GildedRose.txt");
 
         // Act
         Program.Main(Array.Empty<string>());
