@@ -114,7 +114,7 @@ public class ProgramTests
         Program.UpdateQuality(Items);
 
         // Assert
-        Items.Where(i => i.Name.StartsWith("Sulfuras")).FirstOrDefault()!.Quality.Should().Be(80);
+        Items.Where(i => i.Name!.StartsWith("Sulfuras")).FirstOrDefault()!.Quality.Should().Be(80);
     }
 
     [Fact]

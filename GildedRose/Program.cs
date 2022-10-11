@@ -5,7 +5,7 @@ namespace GildedRose
 {
     public class Program
     {
-        IList<Item> Items;
+        IList<Item>? Items;
         public static void Main(string[] args)
         {
             System.Console.WriteLine("OMGHAI!");
@@ -68,7 +68,7 @@ namespace GildedRose
 
     public class Item
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public int SellIn { get; set; }
 
@@ -77,25 +77,16 @@ namespace GildedRose
         public virtual void UpdateQuality()
         {
             SellIn--;
-            if (Quality > 0)
-            {
-                Quality--;
-
-                if (SellIn < 0 && Quality > 0) Quality--;
-            }
+            Quality -= SellIn < 0 ? 2 : 1;
+            if (Quality < 0) Quality = 0;
         }
     }
 
     public class AgedBrieItem : Item {
         public override void UpdateQuality() {
             SellIn--;
-            if (Quality < 50)
-            {
-                Quality++;
-                if (SellIn < 0 && Quality < 50){
-                    Quality++;
-                }
-            }
+            Quality += SellIn < 0 ? 2 : 1;
+            if (Quality > 50) Quality = 50;
         }
     }
 
@@ -103,21 +94,14 @@ namespace GildedRose
         public override void UpdateQuality()
         {
             SellIn--;
-            switch (SellIn)
+
+            Quality += SellIn switch
             {
-                case < 0:
-                    Quality = 0;
-                break;
-                case <= 5:
-                    Quality += 3;
-                break;
-                case <= 10:
-                    Quality += 2;
-                break;
-                case > 10:
-                    Quality += 1;
-                break;
-            }
+                < 0 => -Quality,
+                <= 5 => 3,
+                <= 10 => 2,
+                > 10 => 1
+            };
 
             if (Quality > 50) Quality = 50;
         }
@@ -130,18 +114,8 @@ namespace GildedRose
     public class ConjuredItem : Item {
         public override void UpdateQuality(){
             SellIn--;
-            if (Quality > 0){
-                Quality--;
-                if(Quality > 0){
-                    Quality--;
-                }
-            }
-            if (SellIn < 0 && Quality > 0) {
-                Quality--;
-                if(Quality > 0){
-                    Quality--;
-                }
-            }
+            Quality -= SellIn < 0 ? 4 : 2;
+            if (Quality < 0) Quality = 0;
         }
     }
 }
